@@ -30,6 +30,7 @@ public class Alert {
 	
 	public boolean shouldAlert(TransactionType type, double value) {
 		return config.isEnabled() 
+				&& config.getTransactionType().equalsIgnoreCase(type.toString())
 				&& (config.getMinimumValue() == -1 || value >= config.getMinimumValue()) 
 				&& (config.getMaximumValue() == -1 || value <= config.getMaximumValue());
 	}	
