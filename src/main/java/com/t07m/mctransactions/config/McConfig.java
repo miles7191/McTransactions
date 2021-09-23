@@ -26,6 +26,7 @@ import net.cubespace.Yamler.Config.YamlConfig;
 
 public class McConfig extends YamlConfig {
 
+	private @Getter @Setter String appName = "McTransactions";
 	private @Getter @Setter String NSN = "00000";
 	private @Getter @Setter UserConfig[] Users = new UserConfig[] {
 			new UserConfig(0, false, "User", "example@gmail.com", new int[] {0})

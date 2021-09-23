@@ -74,7 +74,6 @@ public class EmailHandler {
 		}
 		if(users.size() == 0)
 			return true;
-		logger.debug("Building New Alert Email");
 		String messageText = app.getConfig().getEmailTemplate()
 				.replace("{NSN}", app.getConfig().getNSN())
 				.replace("{KS}", ksName)
@@ -111,7 +110,7 @@ public class EmailHandler {
 		}
 		try {
 			MimeMessage message = client.createMessage();
-			message.setFrom(new InternetAddress("Apps.T07M@gmail.com", "McTransactions"));
+			message.setFrom(new InternetAddress("Apps.T07M@gmail.com", app.getConfig().getAppName()));
 			message.setSubject("Transaction Alert {NSN}".replace("{NSN}", app.getConfig().getNSN()));
 			Multipart multipart = new MimeMultipart();
 			for(File file : tempFiles) {
@@ -131,7 +130,6 @@ public class EmailHandler {
 				message.setRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
 				textPart.setContent(messageText.replace("{USER}", user.getFriendlyName()), "text/html");
 				if(client.sendMessage(message)) {
-					logger.debug("Sent message to " + user.getEmail());
 					success = true;
 				}
 			}
@@ -149,7 +147,7 @@ public class EmailHandler {
 		try {
 			logger.debug("Building New Email");
 			MimeMessage message = client.createMessage();
-			message.setFrom(new InternetAddress("Apps.T07M@gmail.com", "McTransactions"));
+			message.setFrom(new InternetAddress("Apps.T07M@gmail.com", app.getConfig().getAppName()));
 			for(String recipient : recipients) {
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
 			}
