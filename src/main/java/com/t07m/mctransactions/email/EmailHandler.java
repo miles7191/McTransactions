@@ -80,6 +80,7 @@ public class EmailHandler {
 				.replace("{KS}", ksName)
 				.replace("{ALERT}", alert.getConfig().getFriendlyName())
 				.replace("{AMOUNT}", currencyFormat.format(BOPParser.getTotal(transaction.getBop())))
+				.replace("{SAVINGS}", currencyFormat.format(Math.max(BOPParser.parseTotalSavings(transaction.getBop()),0)))
 				.replace("{TIME}", BOPParser.getDateTime(transaction.getBop()).format(timeFormat))
 				.replace("{DATE}", BOPParser.getDateTime(transaction.getBop()).format(dateFormat))
 				.replace("{CLIENT}", McTransactions.getIdentity());

@@ -230,6 +230,18 @@ public class BOPParser {
 				return Double.parseDouble(lines.get(totalSavingsIndex).replace("Total Savings", ""));
 			} catch (NumberFormatException e) {}
 		}
+		int managerMealDiscount = indexOf(lines, 0, line -> line.contains("Manager meal discount"));
+		if(managerMealDiscount != -1) {
+			try {
+				return Double.parseDouble(lines.get(managerMealDiscount).replace("Manager meal discount", "").replace("-", ""));
+			} catch (NumberFormatException e) {}
+		}
+		int employeeMealDiscount = indexOf(lines, 0, line -> line.contains("Employee meal discount"));
+		if(employeeMealDiscount != -1) {
+			try {
+				return Double.parseDouble(lines.get(employeeMealDiscount).replace("Employee meal discount", "").replace("-", ""));
+			} catch (NumberFormatException e) {}
+		}
 		return -1;
 	}
 

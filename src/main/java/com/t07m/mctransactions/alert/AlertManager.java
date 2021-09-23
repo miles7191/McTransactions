@@ -64,10 +64,11 @@ public class AlertManager {
 	public void processAlerts(Transaction transaction, String ksName) {
 		TransactionType type = BOPParser.parseTransactionType(transaction.getBop());
 		double value = BOPParser.getTotal(transaction.getBop());
+		double savings = BOPParser.parseTotalSavings(transaction.getBop());
 		ArrayList<Alert> active = new ArrayList<Alert>();
 		synchronized(alerts) {
 			for(Alert alert : alerts) {
-				if(alert.shouldAlert(type, value)) {
+				if(alert.shouldAlert(type, value, savings)) {
 					active.add(alert);
 				}
 			}
