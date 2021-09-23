@@ -26,7 +26,7 @@ import net.cubespace.Yamler.Config.YamlConfig;
 
 public class McConfig extends YamlConfig {
 
-	private @Getter @Setter String appName = "McTransactions";
+	private @Getter @Setter String AppName = "McTransactions";
 	private @Getter @Setter String NSN = "00000";
 	private @Getter @Setter UserConfig[] Users = new UserConfig[] {
 			new UserConfig(0, false, "User", "example@gmail.com", new int[] {0})
@@ -43,6 +43,8 @@ public class McConfig extends YamlConfig {
 	private @Getter @Setter String GmailUser = "";
 	private @Getter @Setter String GmailPassword = "";
 	private @Getter @Setter String EmailTemplate = "<div style=\"font-family:Verdana,serif\" bgcolor=\"#FFFFFF\"><table width=\"100%\" bgcolor=\"#FFFFFF\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td align=\"center\"><table width=\"95%\" cellpadding=\"10\" cellspacing=\"0\" style=\"font-family:Verdana,serif;margin-top:10px\"><tbody><tr style=\"background:-webkit-linear-gradient(#008dc4,#008dc4);background:-moz-linear-gradient(#008dc4,#008dc4);background:linear-gradient(#008dc4,#008dc4)\"><td style=\"border-radius:8px 8px 0 0;font-family:Verdana,serif;font-size:18px\" colspan=\"2\"><h1 border=\"0\" align=\"left\" style=\"display:inline-block;color:#fff;margin:2;margin-left:10;font-size:1.25em\">Transaction Alert {NSN}</h1></td></tr><tr><td colspan=\"2\" bgcolor=q\"#FFFFFF\" style=\"background-color:#fff;border:1px solid #e3e4dc\"><table><tbody><tr><td valign=\"top\" style=\"font-family:Verdana,serif;color:#000000;font-size:14px\"><p>Hi {USER},<br><br>{KS} has triggered a {ALERT} alert with a total of {AMOUNT} and a total savings of {SAVINGS} at {TIME} on {DATE}.<br>Please review the attachments for further details.<br><br>Regards,<br>{CLIENT}</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></div></div>";
+	
+	private @Getter @Setter boolean AutoHide = true;
 	
 	public McConfig() {
 		CONFIG_HEADER = new String[]{"McTransactions Configuration Data"};

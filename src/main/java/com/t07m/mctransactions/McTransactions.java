@@ -15,6 +15,7 @@
  */
 package com.t07m.mctransactions;
 
+import java.awt.Frame;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -98,7 +99,8 @@ public class McTransactions extends Application {
 		alertManager.init();
 		emailHandler = new EmailHandler(new GmailClient(config.getGmailUser(), config.getGmailPassword()), this);
 		if(this.getConsole() instanceof ConsoleWindow) {
-			//((ConsoleWindow)(this.getConsole())).setState(Frame.ICONIFIED);
+			if(config.isAutoHide())
+				((ConsoleWindow)(this.getConsole())).setState(Frame.ICONIFIED);
 		}
 	}
 	
