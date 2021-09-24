@@ -28,15 +28,15 @@ public class WhoAmICommand extends Command{
 
 	private static Logger logger = LoggerFactory.getLogger(WhoAmICommand.class);
 	
-	private final McTransactions trans;
+	private final McTransactions app;
 	
-	public WhoAmICommand(McTransactions trans) {
+	public WhoAmICommand(McTransactions app) {
 		super("WhoAmI");
-		this.trans = trans;
+		this.app = app;
 	}
 
 	public void process(OptionSet optionSet, Console console) {
-		logger.info("I Am: " + trans.getIdentity());
+		logger.info("I Am: " + app.getIdentity() + " NSN: " + app.getConfig().getNSN());
 	}
 
 }

@@ -41,7 +41,6 @@ import net.cubespace.Yamler.Config.InvalidConfigurationException;
 public class McTransactions extends Application {
 
 	public static final Version VERSION = Version.valueOf("0.0.1");
-	public static final String GITHUB_REPO = "miles7191/McTransactions";
 	
 	private static Logger logger = LoggerFactory.getLogger(McTransactions.class);
 
@@ -85,7 +84,7 @@ public class McTransactions extends Application {
 			} catch (InterruptedException e1) {}
 			System.exit(-1);
 		}
-		logger.info("Launching Application - " + getIdentity());
+		logger.info("Launching Application - " + getIdentity() + " NSN:" + config.getNSN());
 		remoteConsole = new RemoteServer(this.getConsole(), 13560);
 		remoteConsole.init();
 		remoteConsole.bind();

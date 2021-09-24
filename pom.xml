@@ -14,7 +14,7 @@
 		<dependency>
 			<groupId>com.t07m.application</groupId>
 			<artifactId>BaseApplication</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.yaml</groupId>
