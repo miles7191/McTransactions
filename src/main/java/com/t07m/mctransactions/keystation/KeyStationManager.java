@@ -41,6 +41,7 @@ public class KeyStationManager {
 	}
 	
 	public void init() {
+		logger.debug("Initializing KeyStationManager");
 		keyStations = new ArrayList<KeyStation>();
 		for(KeyStationConfig ksConfig : app.getConfig().getKeyStations()) {
 			addKeyStation(ksConfig);
@@ -59,7 +60,7 @@ public class KeyStationManager {
 			}
 			KeyStation ks = new KeyStation(ksConfig);
 			keyStations.add(ks);
-			logger.info("Loaded KS: " + ksConfig.getID());
+			logger.info("Loaded KS: " + ksConfig.getFriendlyName());
 			if(ks.getConfig().isEnabled()) {
 				if(ks.getSmbWatcher() == null) {
 					ks.start(app);

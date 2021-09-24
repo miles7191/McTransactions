@@ -57,7 +57,7 @@ public class AlertManager {
 				}
 			}
 			alerts.add(new Alert(config));
-			logger.info("Loaded Alert: " + config.getID());
+			logger.info("Loaded Alert: " + config.getFriendlyName());
 		}
 	}
 	
@@ -65,15 +65,18 @@ public class AlertManager {
 		TransactionType type = BOPParser.parseTransactionType(transaction.getBop());
 		double value = BOPParser.getTotal(transaction.getBop());
 		double savings = BOPParser.parseTotalSavings(transaction.getBop());
+		logger.debug(BOPParser.getShortName(transaction.getBop()) + " - Checking for any alerts Type=" + type.toString() + " Value=" + value + " Savings=" + savings);
 		ArrayList<Alert> active = new ArrayList<Alert>();
 		synchronized(alerts) {
 			for(Alert alert : alerts) {
 				if(alert.shouldAlert(type, value, savings)) {
+					logger.debug(BOPParser.getShortName(transaction.getBop()) + " - Found active Alert: " + alert.getConfig().getFriendlyName());
 					active.add(alert);
 				}
 			}
 		}
 		for(Alert alert : active) {
+			logger.info(ksName + " Triggered " + alert.getConfig().getFriendlyName() + " Value=" + value + " Savings=" + savings + " BOP=" + BOPParser.getShortName(transaction.getBop()));
 			app.getEmailHandler().emailNewAlert(transaction, alert, ksName);
 		}
 	}

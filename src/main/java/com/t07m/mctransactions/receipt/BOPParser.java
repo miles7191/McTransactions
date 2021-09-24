@@ -60,6 +60,10 @@ public class BOPParser {
 
 	private static Logger logger = LoggerFactory.getLogger(BOPParser.class);
 
+	public static String getShortName(BOP bop) {
+		return "RPC" + getKS(bop) + getOrderID(bop);
+	}
+	
 	public static int getKS(BOP bop) {
 		if(validateBOPName(bop)) {
 			try {

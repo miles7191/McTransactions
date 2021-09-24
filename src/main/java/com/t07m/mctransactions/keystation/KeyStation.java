@@ -15,28 +15,22 @@
  */
 package com.t07m.mctransactions.keystation;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Scanner;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.t07m.mctransactions.McTransactions;
 import com.t07m.mctransactions.config.McConfig.KeyStationConfig;
 import com.t07m.mctransactions.net.SMBBopWatcher;
-import com.t07m.mctransactions.receipt.BOP;
-import com.t07m.mctransactions.receipt.ReceiptFormatter;
 
 import lombok.Getter;
 import lombok.Setter;
 
 public class KeyStation {
 
+	private static Logger logger = LoggerFactory.getLogger(KeyStation.class);
+	
 	private @Getter @Setter KeyStationConfig config;
 	
 	private @Getter SMBBopWatcher smbWatcher;
@@ -51,6 +45,7 @@ public class KeyStation {
 		}
 		smbWatcher = new SMBBopWatcher(app, config) {
 			public void onNewBop(String name, InputStream res) {
+				logger.debug("New Bop on KS " + config.getFriendlyName());
 				app.getTransactionHandler().processTransaction(config.getFriendlyName(), config.getCameras(), name, res);
 			}
 		};

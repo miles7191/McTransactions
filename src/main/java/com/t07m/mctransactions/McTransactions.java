@@ -85,7 +85,7 @@ public class McTransactions extends Application {
 			} catch (InterruptedException e1) {}
 			System.exit(-1);
 		}
-		logger.info("Launching Application.");
+		logger.info("Launching Application - " + getIdentity());
 		remoteConsole = new RemoteServer(this.getConsole(), 13560);
 		remoteConsole.init();
 		remoteConsole.bind();

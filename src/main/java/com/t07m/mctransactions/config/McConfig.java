@@ -38,7 +38,7 @@ public class McConfig extends YamlConfig {
 			new KeyStationConfig(0, false, "127.0.0.1", "", "", "", "", "", new int[] {})
 	};
 	private @Getter @Setter CameraConfig[] Cameras = new CameraConfig[] {
-			new CameraConfig(0, false, "http://192.168.0.101/cgi-bin/camera", "admin", "12345")
+			new CameraConfig(0, false, "", "http://192.168.0.101/cgi-bin/camera", "admin", "12345")
 	};
 	private @Getter @Setter String GmailUser = "";
 	private @Getter @Setter String GmailPassword = "";
@@ -72,6 +72,7 @@ public class McConfig extends YamlConfig {
 	public class CameraConfig extends YamlConfig{
 		private @Getter @Setter int ID;
 		private @Getter @Setter boolean Enabled;
+		private @Getter @Setter String FriendlyName;
 		private @Getter @Setter String url;
 		private @Getter @Setter String username;
 		private @Getter @Setter String password;

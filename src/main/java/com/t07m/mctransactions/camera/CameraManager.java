@@ -56,7 +56,7 @@ public class CameraManager{
 				}
 			}
 			cameras.add(new Camera(config));
-			logger.info("Loaded Camera: " + config.getID());
+			logger.info("Loaded Camera: " + config.getFriendlyName());
 		}
 	}
 	

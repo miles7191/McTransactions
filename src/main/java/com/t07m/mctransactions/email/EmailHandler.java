@@ -65,15 +65,16 @@ public class EmailHandler {
 			if(user.isEnabled()) {
 				for(int alertID : user.getAlerts()) {
 					if(alertID == alert.getConfig().getID()) {
-						logger.debug("Found user for alert: " + user.getEmail());
 						users.add(user);
 						break;
 					}
 				}
 			}
 		}
-		if(users.size() == 0)
+		if(users.size() == 0) {
+			logger.warn(alert.getConfig().getFriendlyName() + " - No Users assigned to Alert. The alert will now be disposed.");
 			return true;
+		}
 		String messageText = app.getConfig().getEmailTemplate()
 				.replace("{NSN}", app.getConfig().getNSN())
 				.replace("{KS}", ksName)
@@ -84,41 +85,49 @@ public class EmailHandler {
 				.replace("{DATE}", BOPParser.getDateTime(transaction.getBop()).format(dateFormat))
 				.replace("{CLIENT}", McTransactions.getIdentity());
 		ArrayList<File> tempFiles = new ArrayList<File>();
+		logger.debug(BOPParser.getShortName(transaction.getBop()) + " - Writing receipt to file");
 		BufferedImage receipt = ReceiptFormatter.BOPToImage(transaction.getBop());
 		if(receipt != null) {
 			File file = null;
 				try {
-				file = new File(transaction.getBop().getName().replace(".bop", "") + tempFiles.size() + ".png");
+				file = new File(BOPParser.getShortName(transaction.getBop()) + "-" + tempFiles.size() + ".png");
 				ImageIO.write(receipt, "png", file);
 				tempFiles.add(file);
 			}catch(IOException e) {
+				logger.warn(BOPParser.getShortName(transaction.getBop()) + " - Failed to write receipt image");
 				e.printStackTrace();
 				if(file != null)
 					file.delete();
 			}
 		}
 		for(BufferedImage image : transaction.getImages()) {
+			logger.debug(BOPParser.getShortName(transaction.getBop()) + " - Writing camera image to file");
 			File file = null;
 			try {
-				file = new File(transaction.getBop().getName().replace(".bop", "") + tempFiles.size() + ".png");
+				file = new File(BOPParser.getShortName(transaction.getBop()) + "-" + tempFiles.size() + ".png");
 				ImageIO.write(image, "png", file);
 				tempFiles.add(file);
 			}catch(IOException e) {
+				logger.warn(transaction.getBop().getName() + " - Failed to write camera image");
+				e.printStackTrace();
 				if(file != null)
 					file.delete();
 			}
 		}
 		try {
+			logger.debug(BOPParser.getShortName(transaction.getBop()) + " - Creating new email");
 			MimeMessage message = client.createMessage();
 			message.setFrom(new InternetAddress("Apps.T07M@gmail.com", app.getConfig().getAppName()));
 			message.setSubject("Transaction Alert {NSN}".replace("{NSN}", app.getConfig().getNSN()));
 			Multipart multipart = new MimeMultipart();
 			for(File file : tempFiles) {
 				try {
+					logger.debug(BOPParser.getShortName(transaction.getBop()) + " - Attaching file to email " + file.getName());
 					MimeBodyPart attachmentPart = new MimeBodyPart();
 					attachmentPart.attachFile(file);
 					multipart.addBodyPart(attachmentPart);
 				} catch (IOException | MessagingException e) {
+					logger.warn(BOPParser.getShortName(transaction.getBop()) + " - Failed to attach file " + file.getName());
 					e.printStackTrace();
 				}
 			}
@@ -130,7 +139,10 @@ public class EmailHandler {
 				message.setRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
 				textPart.setContent(messageText.replace("{USER}", user.getFriendlyName()), "text/html");
 				if(client.sendMessage(message)) {
+					logger.debug(BOPParser.getShortName(transaction.getBop()) + " - Sent " + alert.getConfig().getFriendlyName() + " Alert to " + user.getFriendlyName());
 					success = true;
+				}else {
+					logger.debug(BOPParser.getShortName(transaction.getBop()) + " - Failed to send " + alert.getConfig().getFriendlyName() + " Alert to " + user.getFriendlyName());
 				}
 			}
 			for(File file : tempFiles) {
@@ -145,7 +157,6 @@ public class EmailHandler {
 
 	public boolean emailMessage(String text, String... recipients) {
 		try {
-			logger.debug("Building New Email");
 			MimeMessage message = client.createMessage();
 			message.setFrom(new InternetAddress("Apps.T07M@gmail.com", app.getConfig().getAppName()));
 			for(String recipient : recipients) {
